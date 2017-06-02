@@ -1,0 +1,19 @@
+{
+  "name": "retro",
+  "version": "1.0.0",
+  "description": "Retro Games Collection Application",
+  "main": "index.js",
+  "author": "Sumeesh",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "mongoose": "^4.10.4",
+    "morgan": "^1.8.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1"
+  }
+}
