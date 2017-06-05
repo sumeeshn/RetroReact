@@ -10,7 +10,7 @@ exports.devServer = (options) => {
       hot: true,
       inline: true,
       stats: 'errors-only',
-      host: options.host, // in dev - localhost:3000
+      host: options.host, // in dev - localhost:4200
       port: options.port, // 4200
       contentBase: './client/dist'
     },

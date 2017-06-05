@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
+// import connect
+import { connect } from 'react-redux';
+// import bindActionCreators
+import { bindActionCreators } from 'redux';
+import Immutable from 'immutable';
 import { Modal, GameListManager } from '../components';
+// import all actions
+import * as gameActionCreators from '../actions/games';
 
 class GameContainer extends React.Component {
 
   constructor(props) {
     super(props);
-    // initial state
-    this.state = {
-      games: [],
-      selectedGame: {},
-      searchBar: ''
-    }
 
     this.toggleModal = this.toggleModal.bind(this);
     this.setSearchBar = this.setSearchBar.bind(this);
@@ -23,46 +24,24 @@ class GameContainer extends React.Component {
   }
 
   getGames() {
-    fetch('http://localhost:3000/games', {
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    })
-    .then(res => res.json())
-    .then(data => this.setState({ games: data }));
+    this.props.gamesActions.getGames();
   }
 
   toggleModal(index) {
-    this.setState({
-      selectedGame: this.state.games[index]
-    });
-    // TODO:look into this
+    this.props.gamesActions.showSelectedGame(this.props.games[index]);
     $('#game-modal').modal();
   }
 
   setSearchBar(event) {
-    this.setState({
-      searchBar: event.target.value.toLowerCase()
-    });
+    this.props.gamesActions.setSearchBar(event.target.value.toLowerCase());
   }
 
   deleteGame(id) {
-    fetch('http://localhost:3000/games/' + id, {
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      }),
-      method: 'DELETE',
-    })
-    .then(res => res.json())
-    .then(response => {
-      // The game is also removed from the state thanks to the filter function
-      this.setState({ games: this.state.games.filter(game => game._id !== id) });
-      console.log(response.message);
-    });
+    this.props.gamesActions.deleteGame(id);
   }
 
   render () {
-    const { games, selectedGame, searchBar } = this.state;
+    const { games, searchBar, selectedGame } = this.props
     return (
       <div>
         <Modal game={selectedGame} />
@@ -78,4 +57,20 @@ class GameContainer extends React.Component {
   }
 }
 
-export default GameContainer;
+// we can read values from the state through mapStateToProps
+const mapStateToProps = (state) => {
+  return {
+    games: state.getIn(['games', 'list'], Immutable.List()).toJS(),
+    searchBar: state.getIn(['games', 'searchBar'], ''),
+    selectedGame: state.getIn(['games', 'selectedGame'],Immutable.List()).toJS()
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    gamesActions: bindActionCreators(gameActionCreators, dispatch)
+  }
+}
+
+// export the connected GameContainer
+export default connect(mapStateToProps, mapDispatchToProps)(GameContainer)

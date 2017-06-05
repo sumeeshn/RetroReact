@@ -12,6 +12,7 @@ import {
   postGame,
   deleteGame
 } from './app/routes/games';
+import { signup, login, verifyAuth } from './app/routes/user';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -41,17 +42,21 @@ app.use(express.static(__dirname + '/client/dist'));
 // Enable CORS
 app.use(cors());
 
+// Authentication routes
+app.post('/auth/login', login);
+app.post('/auth/signup', signup);
+
 // API routes
 app.route('/games')
   // create a game
-  .post(postGame)
+  .post(verifyAuth, postGame)
   // get all the games
   .get(getGames)
 app.route('/games/:id')
   // get a single game
   .get(getGame)
   // delete a single game
-  .delete(deleteGame)
+  .delete(verifyAuth, deleteGame)
 
 // for all other request redirect to index page
 app.get('*', (req, res) => {

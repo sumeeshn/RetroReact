@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 
-export default class Home extends React.PureComponent {
+export default class Home extends PureComponent {
   // method to check the current location
   active(path) {
     // returns active if the path == current location
