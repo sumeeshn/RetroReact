@@ -12,7 +12,7 @@ import {
   postGame,
   deleteGame
 } from './app/routes/games';
-import { signup, login, verifyAuth } from './app/routes/user';
+import { signup, login, verifyAuth } from './app/routes/users';
 
 const app = express();
 const port = process.env.PORT || 3000;
