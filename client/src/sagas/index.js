@@ -5,6 +5,7 @@ import {
   watchPostGame
 } from './games';
 import {watchUploadPicture} from './filestack';
+import {watchLoginUser, watchSignupUser} from './auth';
 
 export default function* rootSaga() {
   // we start all the sagas in parallel
@@ -12,6 +13,8 @@ export default function* rootSaga() {
     watchGetGames(),
     watchDeleteGame(),
     watchPostGame(),
-    watchUploadPicture()
+    watchUploadPicture(),
+    watchLoginUser(),
+    watchSignupUser()
   ];
 }

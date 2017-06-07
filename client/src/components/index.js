@@ -7,6 +7,8 @@ import Modal from './Modal';
 import GameListManager from './GameListManager';
 import Game from './Game';
 import Form from './Form';
+import Login from './Login';
+import Signup from './Signup';
 
 export {
   Home,
@@ -17,5 +19,7 @@ export {
   Modal,
   GameListManager,
   Game,
-  Form
+  Form,
+  Login,
+  Signup
 };

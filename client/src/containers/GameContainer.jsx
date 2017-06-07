@@ -7,12 +7,14 @@ import Immutable from 'immutable';
 import { Modal, GameListManager } from '../components';
 // import all actions
 import * as gameActionCreators from '../actions/games';
+import * as authActionCreators from '../actions/auth';
+import { toastr } from 'react-redux-toastr';
 
-class GameContainer extends React.Component {
+class GameContainer extends Component {
 
   constructor(props) {
     super(props);
-
+    this.logout = this.logout.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.setSearchBar = this.setSearchBar.bind(this);
     this.deleteGame = this.deleteGame.bind(this);
@@ -40,8 +42,14 @@ class GameContainer extends React.Component {
     this.props.gamesActions.deleteGame(id);
   }
 
+  logout() {
+    this.props.authActions.logoutUser();
+    toastr.success('Retrogames archive', 'Your are now logged out');
+    localStorage.removeItem('token');
+  }
+
   render () {
-    const { games, searchBar, selectedGame } = this.props
+    const { games, searchBar, selectedGame, userName, authActions } = this.props
     return (
       <div>
         <Modal game={selectedGame} />
@@ -51,6 +59,8 @@ class GameContainer extends React.Component {
           setSearchBar={this.setSearchBar}
           toggleModal={this.toggleModal}
           deleteGame={this.deleteGame}
+          userName={userName}
+          logout={this.logout}
         />
       </div>
     );
@@ -62,13 +72,15 @@ const mapStateToProps = (state) => {
   return {
     games: state.getIn(['games', 'list'], Immutable.List()).toJS(),
     searchBar: state.getIn(['games', 'searchBar'], ''),
-    selectedGame: state.getIn(['games', 'selectedGame'],Immutable.List()).toJS()
+    selectedGame: state.getIn(['games', 'selectedGame'],Immutable.List()).toJS(),
+    userName: state.getIn(['auth', 'name'])
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    gamesActions: bindActionCreators(gameActionCreators, dispatch)
+    gamesActions: bindActionCreators(gameActionCreators, dispatch),
+    authActions: bindActionCreators(authActionCreators, dispatch)
   }
 }
 

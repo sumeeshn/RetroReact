@@ -1,14 +1,15 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import Game from './Game';
+import AddGamePanel from './AddGamePanel';
 
 class GameListManager extends PureComponent {
   render() {
-    const { games, searchBar, setSearchBar, toggleModal, deleteGame } = this.props;
+    const { games, searchBar, setSearchBar, toggleModal, deleteGame, userName, logout } = this.props;
     return (
       <div className='container scrollable'>
         <div className='row text-left'>
-          <Link to='/games/add' className='btn btn-danger'>Add a new Game</Link>
+          <AddGamePanel logout={logout} userName={userName}/>
         </div>
         <div className='row'>
           <input type='search' placeholder='Search by Name' className='form-control search-bar' onKeyUp={setSearchBar}/>
